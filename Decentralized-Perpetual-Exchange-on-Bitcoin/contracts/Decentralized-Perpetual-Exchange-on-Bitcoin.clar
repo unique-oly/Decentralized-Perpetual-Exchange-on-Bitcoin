@@ -293,3 +293,95 @@
     timestamp: uint
   }
 )
+
+;; REFERRAL SYSTEM
+(define-map referral-codes
+  { code: (string-ascii 20) }
+  {
+    referrer: principal,
+    total-referrals: uint,
+    total-volume: uint,
+    commission-earned: uint,
+    is-active: bool
+  }
+)
+
+(define-map user-referrals
+  { user: principal }
+  {
+    referrer: (optional principal),
+    referred-users: uint,
+    referral-rewards: uint,
+    discount-tier: uint
+  }
+)
+
+;; ADVANCED ORDER TYPES & STRATEGIES
+(define-map advanced-orders
+  { order-id: (buff 32) }
+  {
+    trader: principal,
+    market-id: uint,
+    order-type: uint, ;; 5: OCO, 6: Trailing Stop, 7: TWAP, 8: Iceberg
+    primary-price: uint,
+    secondary-price: (optional uint),
+    trail-amount: (optional uint),
+    time-in-force: uint,
+    execution-params: (optional (buff 100))
+  }
+)
+
+;; CROSS-MARGIN SYSTEM
+(define-map cross-margin-accounts
+  { user: principal }
+  {
+    total-collateral: uint,
+    used-margin: uint,
+    maintenance-margin: uint,
+    available-margin: uint,
+    portfolio-pnl: int,
+    risk-score: uint
+  }
+)
+
+;; YIELD FARMING VAULTS
+(define-map yield-vaults
+  { vault-id: uint }
+  {
+    name: (string-ascii 30),
+    strategy-contract: principal,
+    total-assets: uint,
+    total-shares: uint,
+    performance-fee: uint,
+    management-fee: uint,
+    is-active: bool,
+    risk-level: uint
+  }
+)
+
+(define-map vault-positions
+  { vault-id: uint, user: principal }
+  {
+    shares: uint,
+    deposited-amount: uint,
+    entry-timestamp: uint,
+    accumulated-yield: uint
+  }
+)
+
+;; GOVERNANCE SYSTEM
+(define-map governance-proposals
+  { proposal-id: uint }
+  {
+    proposer: principal,
+    title: (string-ascii 100),
+    description: (string-ascii 500),
+    proposal-type: uint,
+    voting-start: uint,
+    voting-end: uint,
+    votes-for: uint,
+    votes-against: uint,
+    quorum-reached: bool,
+    executed: bool
+  }
+)
