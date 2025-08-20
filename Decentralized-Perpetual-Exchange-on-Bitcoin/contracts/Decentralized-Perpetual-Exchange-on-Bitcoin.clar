@@ -408,3 +408,57 @@
     risk-adjusted-return: int
   }
 )
+
+;; SOCIAL FEATURES
+(define-map trader-profiles
+  { trader: principal }
+  {
+    display-name: (string-ascii 50),
+    reputation-score: uint,
+    followers: uint,
+    following: uint,
+    public-stats: bool,
+    verified: bool
+  }
+)
+
+(define-map copy-trading
+  { follower: principal, leader: principal }
+  {
+    allocation-percentage: uint,
+    max-position-size: uint,
+    copy-settings: (buff 50),
+    performance: int,
+    start-timestamp: uint
+  }
+)
+
+;; RISK MANAGEMENT ENHANCEMENTS
+(define-map risk-parameters
+  { market-id: uint }
+  {
+    position-limit: uint,
+    concentration-limit: uint,
+    volatility-threshold: uint,
+    correlation-limits: (list 10 uint),
+    stress-test-scenarios: (list 5 uint)
+  }
+)
+
+;; Data variables for counters
+(define-data-var proposal-counter uint u0)
+(define-data-var vault-counter uint u0)
+(define-data-var claim-counter uint u0)
+
+(define-private (calculate-tier (staked-amount uint))
+  (if (>= staked-amount u10000000000) ;; 100 STX
+    TIER_PLATINUM
+    (if (>= staked-amount u5000000000) ;; 50 STX
+      TIER_GOLD
+      (if (>= staked-amount u1000000000) ;; 10 STX
+        TIER_SILVER
+        TIER_BRONZE
+      )
+    )
+  )
+)
