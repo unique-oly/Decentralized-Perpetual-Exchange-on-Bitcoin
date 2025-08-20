@@ -385,3 +385,26 @@
     executed: bool
   }
 )
+
+(define-map governance-votes
+  { proposal-id: uint, voter: principal }
+  {
+    vote: bool, ;; true for yes, false for no
+    voting-power: uint,
+    timestamp: uint
+  }
+)
+
+;; PORTFOLIO ANALYTICS
+(define-map portfolio-metrics
+  { user: principal, period: uint } ;; period in days
+  {
+    total-pnl: int,
+    win-rate: uint,
+    sharpe-ratio: int,
+    max-drawdown: uint,
+    total-trades: uint,
+    avg-holding-period: uint,
+    risk-adjusted-return: int
+  }
+)
